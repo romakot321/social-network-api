@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Социальные медиа</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #121218;
+            color: #E9E9EC;
+        }
+        .table-dark {
+            --bs-table-bg: #1d1d25;
+        }
+        .custom-purple {
+            color: #9466FF;
+        }
+        .nav-link .active {
+            background-color: #7237FF;
+            color: #121212 !important;
+        }
+        .nav-link {
+            color: #9466FF;
+        }
+        .nav-link:hover {
+            color: #7237FF;
+            border: 1px solid #7237FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <ul class="nav nav-tabs py-2">
+            <l1 class="nav-item mx-5"><h3 class="custom-purple">Креаторы</h3></l1>
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="/" data-bs-toggle="tab">Список</a>
+            </li>
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="/create" data-bs-toggle="tab">Создать</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container-md my-5">
+        <h1 class="custom-purple mb-5">Список креаторов</h1>
+        <div class="p-3" style="background-color: #1d1d25; border: 1px solid #2a2a35; border-radius: 10px">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Имя креатора</th>
+                        <th>Youtube</th>
+                        <th>TikTok</th>
+                        <th>Instagram</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for creator in creators %}
+                    <tr>
+                        <td><a href="/creator/{{ creator.account_id }}" class="custom-purple">{{ creator.name }}</a></td>
+                        <td>{{ creator.youtube_total_views }}</td>
+                        <td>{{ creator.tiktok_total_views }}</td>
+                        <td>{{ creator.instagram_total_views }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

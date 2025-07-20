@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление креатора</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #121212;
+            color: #FFFFFF;
+        }
+        .table-dark {
+            --bs-table-bg: #121212;
+        }
+        .custom-purple {
+            color: #9466FF;
+        }
+        .btn-purple {
+            border: 1px solid #9466FF;
+            color: #9466FF;
+        }
+        .btn-purple:hover {
+            color: #7237FF;
+            border: 1px solid #7237FF;
+        }
+        .form-control:active {
+            border: 1px solid #7237FF;
+        }
+        .form-control:focus {
+            border: 1px solid #7237FF;
+        }
+        .nav-link .active {
+            background-color: #7237FF;
+            color: #121212 !important;
+        }
+        .nav-link {
+            color: #9466FF;
+        }
+        .nav-link:hover {
+            color: #7237FF;
+            border: 1px solid #7237FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <ul class="nav nav-tabs py-2">
+            <l1 class="nav-item mx-5"><h3 class="custom-purple">Креаторы</h3></l1>
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="/" data-bs-toggle="tab">Список</a>
+            </li>
+            <li class="nav-item mx-3">
+                <a class="nav-link" href="/create" data-bs-toggle="tab">Создать</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container-md my-5">
+        <h1 class="custom-purple mb-5">Добавить нового креатора</h1>
+        <div class="p-4" style="background-color: #1d1d25; border: 1px solid #2a2a35; border-radius: 10px">
+            <form action="/create" method="post" class="mx-auto">
+                <div class="mb-3">
+                    <label for="creatorName" class="form-label">Имя креатора</label>
+                    <input type="text" class="form-control bg-dark text-white" id="creatorName" placeholder="Введите имя" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="youtubeUsername" class="form-label">Никнейм на ютуб</label>
+                    <input type="text" class="form-control bg-dark text-white" id="youtubeUsername" placeholder="Введите без @" name="youtube_username">
+                </div>
+                <div class="mb-3">
+                    <label for="tiktokUsername" class="form-label">Никнейм в TikTok</label>
+                    <input type="text" class="form-control bg-dark text-white" id="tiktokUsername" placeholder="Введите без @" name="tiktok_username">
+                </div>
+                <div class="mb-3">
+                    <label for="instagramUsername" class="form-label">Никнейм в Instagram</label>
+                    <input type="text" class="form-control bg-dark text-white" id="instagramUsername" placeholder="Введите без @" name="instagram_username">
+                </div>
+                <button type="submit" class="btn btn-purple mt-3 px-3">Добавить креатора</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
