@@ -1,0 +1,5 @@
+[default]
+BASE_URL = "https://www.tiktok.com/"
+HEADLESS = true
+LANG = "en"
+HOME_DIR = "/home/eramir/Documents/social-network-api/backend/src/integration/infrastructure/scraper/tiktokpy"
