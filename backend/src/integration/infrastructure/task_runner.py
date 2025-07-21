@@ -26,7 +26,7 @@ class TaskRunner(ITaskRunner[IntegrationTaskDTO]):
             service=Service.tiktok,
             username=username,
             videos=[
-                Video(url=i.video.play_addr, thumbnail_url=i.video.cover, view_count=i.stats.plays, description=i.desc)
+                Video(url=str(i.video.play_addr), thumbnail_url=str(i.video.cover), view_count=i.stats.plays, description=i.desc)
                 for i in user_feed_items
             ]
         )

@@ -41,7 +41,10 @@ uv sync \
   --frozen
 EOF
 
-FROM python:3.13-slim
+# FROM python:3.13-slim
+FROM node:20-bookworm
+
+RUN npx -y playwright@1.54.0 install --with-deps
 
 ARG user_id=1000
 ARG group_id=1000
@@ -69,19 +72,26 @@ apt-get update --quiet
 rm -rf /var/lib/apt/lists/*
 EOF
 
-ENV PATH=/app/bin:$PATH \
-  PYTHONOPTIMIZE=1 \
+COPY --link --from=ghcr.io/astral-sh/uv:0.6 /uv /usr/local/bin/uv
+
+ENV UV_PYTHON="python$python_version"
+
+ENV PYTHONOPTIMIZE=1 \
   PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1
 
 COPY docker-entrypoint.sh /
 
 COPY --link --chown=$user_id:$group_id --from=build /app/ /app
+COPY uv.lock pyproject.toml /app
 COPY ./backend/alembic /app/alembic
 COPY ./backend/alembic.ini /app
 COPY ./backend/src /app/src
+COPY ./templates /app/templates
 RUN mkdir -p /app/storage && chown $user_id:$group_id -R /app/storage
 RUN mkdir -p /app/logs && chown $user_id:$group_id -R /app/logs
 
 USER $user_id:$group_id
 WORKDIR /app
+RUN uv sync --no-dev --frozen --no-install-project
+RUN /app/.venv/bin/playwright install firefox
