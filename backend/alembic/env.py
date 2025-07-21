@@ -8,7 +8,7 @@ from alembic import context
 
 from src.db.base import Base
 from src.core.config import settings
-from src.task.infrastructure.db.orm import TaskDB
+from src.task.infrastructure.db.orm import TaskDB, TaskItemDB
 from src.account.infrastructure.db.orm import AccountDB, AccountProfileDB
 
 # this is the Alembic Config object, which provides

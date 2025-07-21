@@ -1,7 +1,7 @@
 import json
 
 from src.integration.domain.dtos import IntegrationTaskDTO, IntegrationTaskStatus
-from src.task.domain.dtos import TaskResultDTO
+from src.task.domain.dtos import TaskResultDTO, TaskItemReadDTO
 from src.task.domain.entities import TaskStatus
 
 
@@ -9,7 +9,7 @@ class IntegrationResponseToDomainMapper:
     def map_one(self, data: IntegrationTaskDTO) -> TaskResultDTO:
         return TaskResultDTO(
             status=self._map_status(data.status),
-            result=data.result.model_dump_json(),
+            items=[TaskItemReadDTO(**video.model_dump(), video_created_at=video.created_at) for video in data.result.videos],
             error=data.error
         )
 

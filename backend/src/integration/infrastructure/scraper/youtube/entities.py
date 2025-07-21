@@ -32,6 +32,7 @@ class YoutubeVideo(BaseModel):
 
             default: Thumbnail
 
+        published_at: datetime.datetime = Field(alias="publishedAt")
         title: str
         description: str
         thumbnails: Thumbnails

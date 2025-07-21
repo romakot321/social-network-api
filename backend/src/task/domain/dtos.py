@@ -1,3 +1,4 @@
+import datetime
 import inspect
 from typing import Type
 from uuid import UUID
@@ -42,27 +43,30 @@ class TaskCreateDTO(BaseModel):
     def as_form(cls): ...
 
 
-class TaskReadResultDTO(BaseModel):
-    class Video(BaseModel):
-        url: str
-        thumbnail_url: str
-        view_count: int
-        title: str | None = None
-        description: str | None = None
+class TaskItemReadDTO(BaseModel):
+    url: str
+    thumbnail_url: str
+    view_count: int
+    title: str | None = None
+    description: str | None = None
+    video_created_at: datetime.datetime
 
-    service: Service
-    username: str
-    videos: list[Video]
+
+class TaskReadResultDTO(BaseModel):
+    id: UUID
+    status: TaskStatus
+    items: list[TaskItemReadDTO]
+    error: str | None = None
 
 
 class TaskReadDTO(BaseModel):
     id: UUID
     status: TaskStatus
-    result: TaskReadResultDTO | None = None
+    items: list[TaskItemReadDTO]
     error: str | None = None
 
 
 class TaskResultDTO(BaseModel):
     status: TaskStatus
-    result: str | None = None
+    items: list[TaskItemReadDTO]
     error: str | None = None

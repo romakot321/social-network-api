@@ -9,7 +9,7 @@ from src.task.application.interfaces.task_account_adapter import ITaskAccountAda
 from src.task.application.interfaces.task_runner import ITaskRunner
 from src.task.application.interfaces.task_uow import ITaskUnitOfWork
 from src.task.domain.dtos import TaskReadDTO, TaskCreateDTO, TaskResultDTO
-from src.task.domain.entities import Task, TaskRun, TaskStatus, TaskUpdate
+from src.task.domain.entities import Task, TaskRun, TaskStatus, TaskUpdate, TaskItemCreate
 from src.task.domain.mappers import IntegrationResponseToDomainMapper
 
 
@@ -58,6 +58,8 @@ class RunTaskUseCase:
             task = await self.uow.tasks.update_by_pk(
                 task_id, TaskUpdate(status=result.status, error=result.error, result=result.result)
             )
+            for item in result.items:
+                await self.uow.items.create(TaskItemCreate(task_id=task_id, **item.model_dump()))
             await self.uow.commit()
         return task
 

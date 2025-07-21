@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.engine import async_session_maker
 from src.task.application.interfaces.task_uow import ITaskUnitOfWork
+from src.task.infrastructure.db.task_item_repository import PGTaskItemRepository
 from src.task.infrastructure.db.task_repository import PGTaskRepository
 
 
@@ -13,6 +14,7 @@ class TaskUnitOfWork(ITaskUnitOfWork):
     async def __aenter__(self):
         self.session: AsyncSession = self.session_getter()
         self.tasks = PGTaskRepository(self.session)
+        self.items = PGTaskItemRepository(self.session)
         return await super().__aenter__()
 
     async def __aexit__(self, *args):
