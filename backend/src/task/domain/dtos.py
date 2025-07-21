@@ -70,3 +70,12 @@ class TaskResultDTO(BaseModel):
     status: TaskStatus
     items: list[TaskItemReadDTO]
     error: str | None = None
+
+
+class TaskListParamsDTO(BaseModel):
+    from_created_at: datetime.datetime | None = None
+    to_created_at: datetime.datetime | None = None
+    from_video_created_at: datetime.datetime | None = None
+    to_video_created_at: datetime.datetime | None = None
+    account_id: UUID | None = None
+    service: Service | None = None

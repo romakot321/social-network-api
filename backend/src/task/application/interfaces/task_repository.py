@@ -2,7 +2,7 @@ import abc
 from uuid import UUID
 
 from src.account.domain.entities import Service
-from src.task.domain.entities import Task, TaskCreate, TaskUpdate
+from src.task.domain.entities import Task, TaskCreate, TaskUpdate, TaskList
 
 
 class ITaskRepository(abc.ABC):
@@ -17,3 +17,6 @@ class ITaskRepository(abc.ABC):
 
     @abc.abstractmethod
     async def get_last_for_account(self, account_id: UUID, service: Service) -> Task: ...
+
+    @abc.abstractmethod
+    async def get_list(self, params: TaskList) -> list[Task]: ...

@@ -15,7 +15,7 @@ class GetLastAccountTaskUseCase:
     async def execute(self, account_id: UUID, service: Service) -> TaskReadDTO:
         async with self.uow:
             try:
-                task = await self.uow.tasks.get_last_for_account(account_id)
+                task = await self.uow.tasks.get_last_for_account(account_id, service)
             except DBModelNotFoundException:
                 raise HTTPException(404)
 

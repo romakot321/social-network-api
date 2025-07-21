@@ -60,3 +60,12 @@ class TaskUpdate(BaseModel):
     status: TaskStatus | None = None
     result: str | None = None
     error: str | None = None
+
+
+class TaskList(BaseModel):
+    from_created_at: datetime.datetime | None = None
+    to_created_at: datetime.datetime | None = None
+    from_video_created_at: datetime.datetime | None = None
+    to_video_created_at: datetime.datetime | None = None
+    account_id: UUID | None = None
+    service: Service | None = None

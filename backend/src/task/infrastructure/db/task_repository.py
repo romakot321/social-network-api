@@ -1,14 +1,15 @@
 from uuid import UUID
 
 from sqlalchemy import update, select
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, MissingGreenlet
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from src.account.domain.entities import Service
 from src.db.exceptions import DBModelConflictException, DBModelNotFoundException
 from src.task.application.interfaces.task_repository import ITaskRepository
-from src.task.domain.entities import Task, TaskCreate, TaskStatus, TaskUpdate
-from src.task.infrastructure.db.orm import TaskDB
+from src.task.domain.entities import Task, TaskCreate, TaskStatus, TaskUpdate, TaskList
+from src.task.infrastructure.db.orm import TaskDB, TaskItemDB
 
 
 class PGTaskRepository(ITaskRepository):
@@ -29,7 +30,7 @@ class PGTaskRepository(ITaskRepository):
         return self._to_domain(model)
 
     async def get_by_pk(self, pk: UUID) -> Task:
-        model = await self.session.get(TaskDB, pk)
+        model = await self.session.get(TaskDB, pk, options=[selectinload(TaskDB.items)])
         if model is None:
             raise DBModelNotFoundException()
         return self._to_domain(model)
@@ -50,13 +51,37 @@ class PGTaskRepository(ITaskRepository):
             raise DBModelNotFoundException()
         return self._to_domain(model)
 
+    async def get_list(self, params: TaskList) -> list[Task]:
+        query = select(TaskDB)
+        if params.from_created_at:
+            query = query.filter(TaskDB.created_at >= params.from_created_at)
+        if params.to_created_at:
+            query = query.filter(TaskDB.created_at <= params.to_created_at)
+        if params.from_video_created_at:
+            query = query.filter(TaskDB.items.any(TaskItemDB.video_created_at >= params.from_video_created_at))
+        if params.to_video_created_at:
+            query = query.filter(TaskDB.items.any(TaskItemDB.video_created_at <= params.to_video_created_at))
+        if params.account_id:
+            query = query.filter_by(account_id=params.account_id)
+        if params.service:
+            query = query.filter_by(service=params.service.value)
+        query = query.order_by(TaskDB.created_at.desc())
+
+        models = await self.session.scalars(query)
+        return [self._to_domain(model) for model in models]
+
     @staticmethod
     def _to_domain(model: TaskDB) -> Task:
+        try:
+            items = model.items
+        except MissingGreenlet:
+            items = []
+
         return Task(
             id=model.id,
             account_id=model.account_id,
             service=Service(model.service),
             status=TaskStatus(model.status),
-            result=model.result,
+            items=items,
             error=model.error
         )
