@@ -24,6 +24,7 @@ dependencies = [
     "sqladmin>=0.20.1",
     "sqlalchemy>=2.0.41",
     "tqdm>=4.67.1",
+    "typing-inspect>=0.9.0",
     "uvicorn>=0.34.2",
 ]
 requires-python = ">=3.13"

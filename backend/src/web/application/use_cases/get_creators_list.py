@@ -24,6 +24,16 @@ class GetCreatorsListUseCase:
             accounts = await self.account_uow.accounts.get_list(params)
 
         creators = []
+        total = CreatorReadDTO(
+            name="Итого",
+            account_id=uuid4(),
+            youtube_total_views='0',
+            tiktok_total_views='0',
+            instagram_total_views='0',
+            total_views='0',
+            total_videos='0',
+            big_videos='0',
+        )
 
         async with self.task_uow:
             for account in accounts:
@@ -41,20 +51,15 @@ class GetCreatorsListUseCase:
                     total_videos=tiktok_videos + youtube_videos + instagram_videos,
                     big_videos=tiktok_big_videos + youtube_big_videos + instagram_big_videos
                 )
+                total.tiktok_total_views = str(int(total.tiktok_total_views) + int(tiktok_views))
+                total.youtube_total_views = str(int(total.youtube_total_views) + int(youtube_views))
+                total.instagram_total_views = str(int(total.instagram_total_views) + int(instagram_views))
+                total.total_views = str(int(total.total_views) + tiktok_views + youtube_views + instagram_views)
+                total.total_videos = str(int(total.total_videos) + int(creator.total_videos))
+                total.big_videos = str(int(total.big_videos) + int(creator.big_videos))
                 creators.append(creator)
 
-        creators.append(
-            CreatorReadDTO(
-                name="Итого",
-                account_id=uuid4(),
-                youtube_total_views=humanize.intword(sum([c.youtube_total_views for c in creators])),
-                tiktok_total_views=humanize.intword(sum([c.tiktok_total_views for c in creators])),
-                instagram_total_views=humanize.intword(sum([c.instagram_total_views for c in creators])),
-                total_views=humanize.intword(sum([c.total_views for c in creators])),
-                total_videos=sum([c.total_videos for c in creators]),
-                big_videos=sum([c.big_videos for c in creators]),
-            )
-        )
+        creators.append(total)
 
         return creators
 

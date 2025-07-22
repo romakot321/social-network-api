@@ -37,6 +37,6 @@ class MakeReportUseCase:
         return Report.ServiceReport(
             view_count=view_count,
             video_count=len(videos),
-            average_views=round(view_count / len(videos)),
-            top_video=max(map(lambda i: Video(**i.model_dump()), videos), key=lambda i: i.view_count),
+            average_views=round(view_count / len(videos)) if videos else 0,
+            top_video=max(map(lambda i: Video(**i.model_dump()), videos), key=lambda i: i.view_count) if videos else None,
         )

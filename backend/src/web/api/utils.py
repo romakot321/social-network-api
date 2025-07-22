@@ -17,7 +17,7 @@ async def scrape_accounts():
     task_runner = get_task_runner()
     account_adapter = get_account_adapter()
 
-    accounts = await GetAccountsListUseCase(account_uow).execute(AccountListParamsDTO(count=99999999))
+    accounts = await GetAccountsListUseCase(account_uow).execute(AccountListParamsDTO(count=99999999, page=0))
     for account in accounts:
         await RunCreatorScrapUseCase(task_uow, task_runner, account_adapter, AsyncHttpClient()).execute(account)
         await asyncio.sleep(30)

@@ -55,7 +55,7 @@
     </div>
 
     <div class="container my-5">
-        <h2>Статистика за эту неделю</h2>
+        <h2 class="mb-3">Статистика за эту неделю</h2>
         <div class="p-3 row" style="background-color: #1d1d25; border-radius: 10px;">
             <div class="col-4">
                 <p>Количество просмотров</p>
@@ -81,6 +81,7 @@
                     <img src="{{ video.thumbnail_url }}" class="card-img-top" alt="Превью видео">
                     <div class="card-body">
                         <h5 class="card-title">{{ video.title or 'Видео'}}</h5>
+			<span class="text-muted">{{ video.created_at.strftime('%d.%m.%Y') if video.created_at else '' }}</span>
                         <p class="card-text" style="white-space: pre-wrap">{{ video.description[:500] or ''}}</p>
                         <span class="badge badge-views my-auto">{{ video.view_count }} просмотров</span>
                     </div>
