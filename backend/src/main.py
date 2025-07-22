@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 from src.core.logging_setup import setup_fastapi_logging
@@ -6,8 +8,16 @@ from src.task.api.rest import router as task_router
 from src.account.api.rest import router as account_router
 from src.web.api.rest import router as web_router
 from src.report.api.rest import router as report_router
+from src.web.api.utils import scrape_accounts
 
-app = FastAPI(title="Social Network API")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await scrape_accounts()
+    yield
+
+
+app = FastAPI(title="Social Network API", lifespan=lifespan)
 setup_fastapi_logging(app)
 
 app.include_router(task_router, tags=["Task"], prefix="/api/task")

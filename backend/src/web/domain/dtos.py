@@ -7,9 +7,12 @@ from pydantic import BaseModel
 class CreatorReadDTO(BaseModel):
     name: str
     account_id: UUID
-    youtube_total_views: int
-    instagram_total_views: int
-    tiktok_total_views: int
+    youtube_total_views: str
+    instagram_total_views: str
+    tiktok_total_views: str
+    total_views: str
+    total_videos: int
+    big_videos: int
 
 
 class CreatorCreateDTO(BaseModel):

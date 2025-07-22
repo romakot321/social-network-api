@@ -8,6 +8,7 @@ dependencies = [
     "asyncpg>=0.30.0",
     "dynaconf>=3.2.11",
     "fastapi>=0.115.12",
+    "fastapi-utils>=0.8.0",
     "gunicorn>=23.0.0",
     "humanize>=4.12.3",
     "itsdangerous>=2.2.0",

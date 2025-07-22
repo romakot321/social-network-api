@@ -1,5 +1,7 @@
 import asyncio
 
+from loguru import logger
+
 from src.account.domain.dtos import AccountReadDTO
 from src.account.domain.entities import Service
 from src.core.http.client import IHttpClient
@@ -21,6 +23,7 @@ class RunCreatorScrapUseCase:
     async def execute(self, account: AccountReadDTO):
         for service in Service:
             await self._run(account, service)
+        logger.info(f"Runned creator {account.id=} scrap")
 
     async def _run(self, account: AccountReadDTO, service: Service):
         try:

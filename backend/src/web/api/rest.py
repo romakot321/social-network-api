@@ -1,5 +1,5 @@
 import datetime
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -17,7 +17,7 @@ from src.web.application.use_cases.create_creator import CreateCreatorUseCase
 from src.web.application.use_cases.get_creator_videos import GetCreatorVideosUseCase
 from src.web.application.use_cases.get_creators_list import GetCreatorsListUseCase
 from src.web.application.use_cases.run_creator_scrap import RunCreatorScrapUseCase
-from src.web.domain.dtos import CreatorCreateDTO, CreatorVideosListParamsDTO
+from src.web.domain.dtos import CreatorCreateDTO, CreatorVideosListParamsDTO, CreatorReadDTO
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
