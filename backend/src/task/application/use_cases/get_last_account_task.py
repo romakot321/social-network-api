@@ -1,5 +1,5 @@
-from http.client import HTTPException
 from uuid import UUID
+from fastapi import HTTPException
 
 from src.account.domain.entities import Service
 from src.db.exceptions import DBModelNotFoundException
