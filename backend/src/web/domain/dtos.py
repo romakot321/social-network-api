@@ -21,3 +21,8 @@ class CreatorCreateDTO(BaseModel):
     @classmethod
     def as_form(cls, name: str = Form(), youtube_username: str | None = Form(None), tiktok_username: str | None = Form(None), instagram_username: str | None = Form(None)):
         return cls(name=name, youtube_username=youtube_username, tiktok_username=tiktok_username, instagram_username=instagram_username)
+
+
+class CreatorVideosListParamsDTO(BaseModel):
+    count: int = 25
+    page: int = 0

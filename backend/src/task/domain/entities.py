@@ -69,3 +69,10 @@ class TaskList(BaseModel):
     to_video_created_at: datetime.datetime | None = None
     account_id: UUID | None = None
     service: Service | None = None
+
+
+class TaskItemList(BaseModel):
+    tasks_ids: list[UUID] | None = None
+    account_id: UUID | None = None
+    page: int
+    count: int

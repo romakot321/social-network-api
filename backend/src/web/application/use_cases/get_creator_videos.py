@@ -5,24 +5,31 @@ from src.db.exceptions import DBModelNotFoundException
 from src.integration.domain.entities import Video
 from src.task.application.interfaces.task_uow import ITaskUnitOfWork
 from src.task.domain.dtos import TaskReadResultDTO
+from src.task.domain.entities import TaskItemList
+from src.web.domain.dtos import CreatorVideosListParamsDTO
 
 
 class GetCreatorVideosUseCase:
     def __init__(self, task_uow: ITaskUnitOfWork):
         self.task_uow = task_uow
 
-    async def execute(self, account_id: UUID) -> list[Video]:
+    async def execute(self, account_id: UUID, dto: CreatorVideosListParamsDTO) -> list[Video]:
         async with self.task_uow:
+            tasks_ids = []
+
             try:
                 last_tiktok_task = await self.task_uow.tasks.get_last_for_account(account_id, Service.tiktok)
-                tiktok_videos = [Video(**i.model_dump()) for i in last_tiktok_task.items]
+                tasks_ids.append(last_tiktok_task.id)
             except DBModelNotFoundException:
-                tiktok_videos = []
+                pass
 
             try:
                 last_youtube_task = await self.task_uow.tasks.get_last_for_account(account_id, Service.youtube)
-                youtube_videos = [Video(**i.model_dump()) for i in last_youtube_task.items]
+                tasks_ids.append(last_youtube_task.id)
             except DBModelNotFoundException:
-                youtube_videos = []
+                pass
 
-        return tiktok_videos + youtube_videos
+            videos = await self.task_uow.items.get_list(TaskItemList(tasks_ids=tasks_ids, page=dto.page, count=dto.count))
+            videos = [Video(**i.model_dump()) for i in videos]
+
+        return videos

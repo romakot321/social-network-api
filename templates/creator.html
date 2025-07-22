@@ -55,6 +55,24 @@
     </div>
 
     <div class="container my-5">
+        <h2>Статистика за эту неделю</h2>
+        <div class="p-3 row" style="background-color: #1d1d25; border-radius: 10px;">
+            <div class="col-4">
+                <p>Количество просмотров</p>
+                <p>Количество видео</p>
+                <p>Среднее кол-во просмотров на видео</p>
+                <p>Топ видео</p>
+            </div>
+            <div class="col-8">
+                <p>Youtube: {{ report.youtube.view_count }} | TikTok: {{ report.tiktok.view_count }} | Instagram: {{ report.instagram.view_count }}</p>
+                <p>Youtube: {{ report.youtube.video_count }} | TikTok: {{ report.tiktok.video_count }} | Instagram: {{ report.instagram.video_count }}</p>
+                <p>Youtube: {{ report.youtube.average_views }} | TikTok: {{ report.tiktok.average_views }} | Instagram: {{ report.instagram.average_views }}</p>
+                <p>Youtube: {{ report.youtube.top_video.url or '' }} | TikTok: {{ report.tiktok.top_video.url or '' }} | Instagram: {{ report.instagram.top_video.url or '' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
         <h1 class="custom-purple mb-5">Публикации креатора: {{ account.name }}</h1>
         <div class="row g-5">
             {% for video in videos %}
