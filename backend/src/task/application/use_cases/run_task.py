@@ -56,7 +56,7 @@ class RunTaskUseCase:
     async def _store_result(self, task_id: UUID, result: TaskResultDTO) -> Task:
         async with self.uow:
             task = await self.uow.tasks.update_by_pk(
-                task_id, TaskUpdate(status=result.status, error=result.error, result=result.result)
+                task_id, TaskUpdate(status=result.status, error=result.error)
             )
             for item in result.items:
                 await self.uow.items.create(TaskItemCreate(task_id=task_id, **item.model_dump()))

@@ -15,13 +15,13 @@ class GetCreatorVideosUseCase:
         async with self.task_uow:
             try:
                 last_tiktok_task = await self.task_uow.tasks.get_last_for_account(account_id, Service.tiktok)
-                tiktok_videos = TaskReadResultDTO.model_validate_json(last_tiktok_task.result).videos
+                tiktok_videos = [Video(**i.model_dump()) for i in last_tiktok_task.items]
             except DBModelNotFoundException:
                 tiktok_videos = []
 
             try:
                 last_youtube_task = await self.task_uow.tasks.get_last_for_account(account_id, Service.youtube)
-                youtube_videos = TaskReadResultDTO.model_validate_json(last_youtube_task.result).videos
+                youtube_videos = [Video(**i.model_dump()) for i in last_youtube_task.items]
             except DBModelNotFoundException:
                 youtube_videos = []
 

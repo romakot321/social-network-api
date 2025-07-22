@@ -37,5 +37,4 @@ class GetCreatorsListUseCase:
         except DBModelNotFoundException:
             return 0
 
-        last_task_result = TaskReadResultDTO.model_validate_json(last_task.result)
-        return sum(v.view_count for v in last_task_result.videos)
+        return sum(i.view_count for i in last_task.items)

@@ -24,7 +24,7 @@ class YoutubeClient(HttpApiClient):
 
         while True:
             response = await self.request("GET", "/youtube/v3/playlistItems",
-                                          params={"part": 'contentDetails', 'playlistId': playlist_id, "key": self.api_key, "maxResults": 50, "pageToken": page_token})
+                                          params={"part": 'contentDetails', 'playlistId': playlist_id, "key": self.api_key, "maxResults": 50, "pageToken": page_token or ''})
             items_response = self.validate_response(response.data, YoutubePlaylistItemsListResponse)
             videos.extend(items_response.items)
             if items_response.next_page_token is None:

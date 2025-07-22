@@ -28,7 +28,7 @@ class TaskRunner(ITaskRunner[IntegrationTaskDTO]):
             service=Service.tiktok,
             username=username,
             videos=[
-                Video(url=str(i.video.play_addr), thumbnail_url=str(i.video.cover), view_count=i.stats.plays, description=i.desc, created_at=datetime.datetime.fromtimestamp(i.created_time))
+                Video(url=str(i.video.play_addr), thumbnail_url=str(i.video.cover), view_count=i.stats.plays, description=i.desc, created_at=datetime.datetime.fromtimestamp(i.create_time))
                 for i in user_feed_items
             ]
         )
@@ -42,5 +42,5 @@ class TaskRunner(ITaskRunner[IntegrationTaskDTO]):
         return IntegrationTaskResultDTO(
             service=Service.youtube,
             username=username,
-            videos=[Video(url=v.url, thumbnail_url=v.snippet.thumbnails.default.url, view_count=v.statistics.view_count, title=v.snippet.title, description=v.snippet.description, created_at=v.snippet.published_at) for v in videos]
+            videos=[Video(url=v.url, thumbnail_url=v.snippet.thumbnails.default.url, view_count=v.statistics.view_count, title=v.snippet.title, description=v.snippet.description, created_at=v.snippet.published_at.replace(tzinfo=None)) for v in videos]
         )

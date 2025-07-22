@@ -17,5 +17,4 @@ class GetTaskUseCase:
                 task = await self.uow.tasks.get_by_pk(task_id)
             except DBModelNotFoundException:
                 raise HTTPException(404)
-        return TaskReadDTO(**task.model_dump(exclude={"result"}),
-                           result=TaskReadResultDTO.model_validate_json(task.result))
+        return TaskReadDTO.model_validate(task)

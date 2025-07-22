@@ -4,7 +4,7 @@ from typing import Type
 from uuid import UUID
 
 from fastapi import Form
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, ConfigDict
 
 from src.account.domain.entities import Service
 from src.task.domain.entities import TaskStatus
@@ -51,6 +51,8 @@ class TaskItemReadDTO(BaseModel):
     description: str | None = None
     video_created_at: datetime.datetime
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class TaskReadResultDTO(BaseModel):
     id: UUID
@@ -64,6 +66,8 @@ class TaskReadDTO(BaseModel):
     status: TaskStatus
     items: list[TaskItemReadDTO]
     error: str | None = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TaskResultDTO(BaseModel):

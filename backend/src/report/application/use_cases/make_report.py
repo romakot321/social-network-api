@@ -24,6 +24,8 @@ class MakeReportUseCase:
         )
 
     async def get_service_report(self, from_datetime, to_datetime, account_id, service: Service) -> Report.ServiceReport:
+        from_datetime = from_datetime.replace(tzinfo=None)
+        to_datetime = to_datetime.replace(tzinfo=None)
         try:
             task = await self.task_adapter.get_account_last(account_id, service)
         except DBModelNotFoundException:
