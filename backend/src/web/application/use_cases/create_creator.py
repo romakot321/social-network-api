@@ -24,6 +24,10 @@ class CreateCreatorUseCase:
         if dto.instagram_username:
             profile_dto = AccountProfileCreateDTO(service=Service.instagram, service_username=dto.instagram_username)
             profiles.append(await AddAccountProfileUseCase(self.account_uow).execute(account.id, profile_dto))
+        if dto.fotobudka_url:
+            service_username = dto.fotobudka_url.rsplit("/", 1)[-1]
+            profile_dto = AccountProfileCreateDTO(service=Service.fotobudka, service_username=service_username)
+            profiles.append(await AddAccountProfileUseCase(self.account_uow).execute(account.id, profile_dto))
 
         account.profiles = [AccountProfileReadDTO(**profile.model_dump()) for profile in profiles]
 

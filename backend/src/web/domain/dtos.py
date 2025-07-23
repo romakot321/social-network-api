@@ -13,6 +13,7 @@ class CreatorReadDTO(BaseModel):
     total_views: str
     total_videos: int
     big_videos: int
+    fotobudka_income: int
 
 
 class CreatorCreateDTO(BaseModel):
@@ -20,6 +21,7 @@ class CreatorCreateDTO(BaseModel):
     youtube_username: str | None = None
     tiktok_username: str | None = None
     instagram_username: str | None = None
+    fotobudka_url: str | None = None
 
     @classmethod
     def as_form(cls, name: str = Form(), youtube_username: str | None = Form(None), tiktok_username: str | None = Form(None), instagram_username: str | None = Form(None)):

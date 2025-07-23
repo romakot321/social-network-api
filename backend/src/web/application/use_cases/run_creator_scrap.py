@@ -22,6 +22,8 @@ class RunCreatorScrapUseCase:
 
     async def execute(self, account: AccountReadDTO):
         for service in Service:
+            if service is Service.fotobudka:
+                continue
             await self._run(account, service)
         logger.info(f"Runned creator {account.id=} scrap")
 

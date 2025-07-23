@@ -49,7 +49,7 @@
                 <thead>
                     <tr>
                         <th>Имя креатора</th>
-                        <th colspan="3">Просмотры</th>
+                        <th colspan="3" class="text-center">Просмотры</th>
                         <th>Всего просмотров</th>
                         <th>Всего роликов</th>
                         <th>Всего роликов > 1 млн</th>
@@ -59,10 +59,13 @@
                         <th>Youtube</th>
                         <th>TikTok</th>
                         <th>Instagram</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for creator in creators %}
+                    {% for creator in creators[:-1] %}
                     <tr>
                         <td><a href="/creator/{{ creator.account_id }}" class="custom-purple">{{ creator.name }}</a></td>
                         <td>{{ creator.youtube_total_views }}</td>
@@ -73,6 +76,15 @@
                         <td>{{ creator.big_videos }}</td>
                     </tr>
                     {% endfor %}
+                    <tr>
+                        <th>{{ creators[-1].name }}</th>
+                        <td>{{ creators[-1].youtube_total_views }}</td>
+                        <td>{{ creators[-1].tiktok_total_views }}</td>
+                        <td>{{ creators[-1].instagram_total_views }}</td>
+                        <td>{{ creators[-1].total_views }}</td>
+                        <td>{{ creators[-1].total_videos }}</td>
+                        <td>{{ creators[-1].big_videos }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

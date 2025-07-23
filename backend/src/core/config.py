@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "123"
 
     YOUTUBE_API_KEY: str
+    FOTOBUDKA_API_TOKEN: str
 
     PROJECT_NAME: str = os.environ.get("PROJECT_NAME", "UNNAMED PROJECT")
 

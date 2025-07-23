@@ -8,6 +8,7 @@ class Service(str, Enum):
     tiktok = "tiktok"
     youtube = "youtube"
     instagram = "instagram"
+    fotobudka = "fotobudka"
 
 
 class AccountProfile(BaseModel):
