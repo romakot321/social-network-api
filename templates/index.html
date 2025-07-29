@@ -35,11 +35,11 @@
             color: #7237FF;
             border: 1px solid #7237FF;
         }
-	.input-group-text {
+        .input-group-text {
             background-color: #1d1d25;
             color: #E9E9EC;
             border: 1px solid #E9E9EC;
-	}
+        }
         .form-control {
             background-color: #1d1d25;
             color: #E9E9EC;
@@ -73,7 +73,7 @@
             <label>Период</label>
             <div class="row">
               <div class="col-md input-group mb-3">
-	        <input type="datetime-local" class="form-control" name="stats_from" value="{{ params.stats_from }}">
+                <input type="datetime-local" class="form-control" name="stats_from" value="{{ params.stats_from }}">
                 <span class="input-group-text">-</span>
                 <input type="datetime-local" class="form-control" name="stats_to" value="{{ params.stats_to }}">
               </div>
@@ -82,6 +82,8 @@
               </div>
             </div>
             <div class="row">
+              <a href="/?stats_from={{ dates.today_start }}&stats_to={{ dates.today_end }}" class="custom-purple">За сегодня</a>
+              <a href="/?stats_from={{ dates.yesterday_start }}&stats_to={{ dates.yesterday_end }}" class="custom-purple">За вчера</a>
             </div>
           </form>
         </div>
