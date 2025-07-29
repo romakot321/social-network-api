@@ -1,3 +1,4 @@
+import datetime
 from uuid import UUID
 
 from fastapi import Form
@@ -29,5 +30,7 @@ class CreatorCreateDTO(BaseModel):
 
 
 class CreatorVideosListParamsDTO(BaseModel):
+    from_created_at: datetime.datetime | None = None
+    to_created_at: datetime.datetime | None = None
     count: int = 25
     page: int = 0

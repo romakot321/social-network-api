@@ -1,3 +1,4 @@
+import datetime
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
@@ -33,3 +34,5 @@ class AccountListParamsDTO(BaseModel):
     page: int = 0
     count: int = 100
     name: str | None = None
+    stats_from: datetime.datetime | None = None
+    stats_to: datetime.datetime | None = None

@@ -1,3 +1,4 @@
+import datetime
 from uuid import uuid4
 
 import humanize
@@ -40,9 +41,9 @@ class GetCreatorsListUseCase:
 
         async with self.task_uow:
             for account in accounts:
-                tiktok_views, tiktok_videos, tiktok_big_videos = await self._calculate_total_views_videos(account, Service.tiktok)
-                youtube_views, youtube_videos, youtube_big_videos = await self._calculate_total_views_videos(account, Service.youtube)
-                instagram_views, instagram_videos, instagram_big_videos = await self._calculate_total_views_videos(account, Service.instagram)
+                tiktok_views, tiktok_videos, tiktok_big_videos = await self._calculate_total_views_videos(account, Service.tiktok, dto.stats_from, dto.stats_to)
+                youtube_views, youtube_videos, youtube_big_videos = await self._calculate_total_views_videos(account, Service.youtube, dto.stats_from, dto.stats_to)
+                instagram_views, instagram_videos, instagram_big_videos = await self._calculate_total_views_videos(account, Service.instagram, dto.stats_from, dto.stats_to)
                 fotobudka_income = await self._get_fotobudka_income(account)
 
                 creator = CreatorReadDTO(
@@ -87,14 +88,21 @@ class GetCreatorsListUseCase:
         response = await self.fotobudka_client.get_partner_stat(profile[0].service_username)
         return response.data.amount
 
-    async def _calculate_total_views_videos(self, account: Account, service: Service) -> tuple[int, int, int]:
+    async def _calculate_total_views_videos(self, account: Account, service: Service, from_datetime: datetime.datetime | None, to_datetime: datetime.datetime | None) -> tuple[int, int, int]:
         try:
             last_task = await self.task_uow.tasks.get_last_for_account(account.id, service)
         except DBModelNotFoundException:
             return 0, 0, 0
 
+        items = last_task.items
+        if from_datetime:
+            items = filter(lambda i: i.video_created_at >= from_datetime, items)
+        if to_datetime:
+            items = filter(lambda i: i.video_created_at <= to_datetime, items)
+        items = list(items)
+
         return (
-            sum(i.view_count for i in last_task.items),
-            len(last_task.items),
-            len([i for i in last_task.items if i.view_count >= 1000000])
+            sum(i.view_count for i in items),
+            len(items),
+            len([i for i in items if i.view_count >= 1000000])
         )

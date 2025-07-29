@@ -24,7 +24,15 @@ class GetCreatorVideosUseCase:
                 except DBModelNotFoundException:
                     continue
 
-            videos = await self.task_uow.items.get_list(TaskItemList(tasks_ids=tasks_ids, page=dto.page, count=dto.count))
+            videos = await self.task_uow.items.get_list(
+                TaskItemList(
+                    tasks_ids=tasks_ids,
+                    page=dto.page,
+                    count=dto.count,
+                    from_video_created_at=dto.from_created_at,
+                    to_video_created_at=dto.to_created_at,
+                )
+            )
             videos = [Video(**i.model_dump()) for i in videos]
 
         return videos
