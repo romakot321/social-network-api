@@ -4,6 +4,7 @@ from src.account.domain.entities import Service
 from src.core.http.client import AsyncHttpClient
 from src.integration.domain.dtos import IntegrationTaskDTO, IntegrationTaskResultDTO, IntegrationTaskStatus
 from src.integration.domain.entities import Video
+from src.integration.infrastructure.scraper.instagram.client import InstagramClient
 from src.integration.infrastructure.scraper.tiktok.bot import TikTokPy
 from src.integration.infrastructure.scraper.youtube.client import YoutubeClient
 from src.task.application.interfaces.task_runner import ITaskRunner
@@ -16,9 +17,29 @@ class TaskRunner(ITaskRunner[IntegrationTaskDTO]):
             result = await self.start_tiktok(data.username)
         elif data.service == Service.youtube:
             result = await self.start_youtube(data.username)
+        elif data.service == Service.instagram:
+            result = await self.start_instagram(data.username)
         else:
             raise NotImplementedError(f"Service {data.service.name} not implemented")
         return IntegrationTaskDTO(status=IntegrationTaskStatus.finished, result=result, error=None)
+
+    async def start_instagram(self, username: str) -> IntegrationTaskResultDTO:
+        async with InstagramClient() as client:
+            posts = await client.get_user_posts(username)
+        return IntegrationTaskResultDTO(
+            service=Service.instagram,
+            username=username,
+            videos=[
+                Video(
+                    url=post.url,
+                    thumbnail_url=post.image_versions2.candidates[0].url,
+                    view_count=(post.play_count or post.like_count) or 0,
+                    description=post.caption.text if post.caption else None,
+                    created_at=datetime.datetime.fromtimestamp(post.taken_at),
+                )
+                for post in posts
+            ],
+        )
 
     async def start_tiktok(self, username: str) -> IntegrationTaskResultDTO:
         async with TikTokPy() as bot:
@@ -28,9 +49,15 @@ class TaskRunner(ITaskRunner[IntegrationTaskDTO]):
             service=Service.tiktok,
             username=username,
             videos=[
-                Video(url=str(i.video.play_addr), thumbnail_url=str(i.video.cover), view_count=i.stats.plays, description=i.desc, created_at=datetime.datetime.fromtimestamp(i.create_time))
+                Video(
+                    url=str(i.video.play_addr),
+                    thumbnail_url=str(i.video.cover),
+                    view_count=i.stats.plays,
+                    description=i.desc,
+                    created_at=datetime.datetime.fromtimestamp(i.create_time),
+                )
                 for i in user_feed_items
-            ]
+            ],
         )
 
     async def start_youtube(self, username: str) -> IntegrationTaskResultDTO:
@@ -42,5 +69,15 @@ class TaskRunner(ITaskRunner[IntegrationTaskDTO]):
         return IntegrationTaskResultDTO(
             service=Service.youtube,
             username=username,
-            videos=[Video(url=v.url, thumbnail_url=v.snippet.thumbnails.default.url, view_count=v.statistics.view_count, title=v.snippet.title, description=v.snippet.description, created_at=v.snippet.published_at.replace(tzinfo=None)) for v in videos]
+            videos=[
+                Video(
+                    url=v.url,
+                    thumbnail_url=v.snippet.thumbnails.default.url,
+                    view_count=v.statistics.view_count,
+                    title=v.snippet.title,
+                    description=v.snippet.description,
+                    created_at=v.snippet.published_at.replace(tzinfo=None),
+                )
+                for v in videos
+            ],
         )

@@ -17,17 +17,12 @@ class GetCreatorVideosUseCase:
         async with self.task_uow:
             tasks_ids = []
 
-            try:
-                last_tiktok_task = await self.task_uow.tasks.get_last_for_account(account_id, Service.tiktok)
-                tasks_ids.append(last_tiktok_task.id)
-            except DBModelNotFoundException:
-                pass
-
-            try:
-                last_youtube_task = await self.task_uow.tasks.get_last_for_account(account_id, Service.youtube)
-                tasks_ids.append(last_youtube_task.id)
-            except DBModelNotFoundException:
-                pass
+            for service in Service:
+                try:
+                    last_task = await self.task_uow.tasks.get_last_for_account(account_id, service)
+                    tasks_ids.append(last_task.id)
+                except DBModelNotFoundException:
+                    continue
 
             videos = await self.task_uow.items.get_list(TaskItemList(tasks_ids=tasks_ids, page=dto.page, count=dto.count))
             videos = [Video(**i.model_dump()) for i in videos]
