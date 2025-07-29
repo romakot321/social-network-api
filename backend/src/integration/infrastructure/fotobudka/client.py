@@ -9,8 +9,8 @@ _cache = {}
 
 
 class FotobudkaClient(HttpApiClient):
-    def __init__(self, client: IHttpClient, source_url="https://bot.fotobudka.online"):
-        super().__init__(client, source_url=source_url, token=settings.FOTOBUDKA_API_TOKEN)
+    def __init__(self, client: IHttpClient):
+        super().__init__(client, "https://bot.fotobudka.online", token=settings.FOTOBUDKA_API_TOKEN)
 
     async def get_partner_stat(self, partner_code: str) -> FotobudkaPartnerStatResponse:
         if (cached := _cache.get(partner_code)) is not None:

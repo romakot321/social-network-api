@@ -27,9 +27,9 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse)
 async def creators_list_page(request: Request, account_uow: AccountUoWDepend, task_uow: TaskUoWDepend, params: AccountListParamsDTO = Depends()):
-    fotobudka_client = FotobudkaClient(AsyncHttpClient(), "")
+    fotobudka_client = FotobudkaClient(AsyncHttpClient())
     creators = await GetCreatorsListUseCase(task_uow, account_uow, fotobudka_client).execute(params)
-    return templates.TemplateResponse("index.html", {"request": request, "creators": creators})
+    return templates.TemplateResponse("index.html", {"request": request, "creators": creators, "params": params})
 
 
 @router.get("/creator/{account_id}", response_class=HTMLResponse)

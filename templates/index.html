@@ -35,10 +35,15 @@
             color: #7237FF;
             border: 1px solid #7237FF;
         }
+	.input-group-text {
+            background-color: #1d1d25;
+            color: #E9E9EC;
+            border: 1px solid #E9E9EC;
+	}
         .form-control {
             background-color: #1d1d25;
             color: #E9E9EC;
-            border: 1px solid #2a2a35;
+            border: 1px solid #E9E9EC;
         }
         .form-control:active {
             border: 1px solid #7237FF;
@@ -66,15 +71,17 @@
         <div class="p-3 mb-3" style="background-color: #1d1d25; border: 1px solid #2a2a35; border-radius: 10px">
           <form method="GET">
             <label>Период</label>
-            <div class="row justify-content-between">
-              <div class="col-md-6 input-group">
-                <input type="date" class="form-control" name="from_stats">
+            <div class="row">
+              <div class="col-md input-group mb-3">
+	        <input type="datetime-local" class="form-control" name="stats_from" value="{{ params.stats_from }}">
                 <span class="input-group-text">-</span>
-                <input type="date" class="form-control" name="to_stats">
+                <input type="datetime-local" class="form-control" name="stats_to" value="{{ params.stats_to }}">
               </div>
-              <div class="col-md-2">
+              <div class="col-md-1 mb-3">
                 <input type="submit" value="Поиск" class="btn btn-purple">
               </div>
+            </div>
+            <div class="row">
             </div>
           </form>
         </div>
