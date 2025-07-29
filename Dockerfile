@@ -69,6 +69,7 @@ EOF
 
 RUN <<EOF
 apt-get update --quiet
+apt-get install -y proxychains4
 rm -rf /var/lib/apt/lists/*
 EOF
 
@@ -82,6 +83,7 @@ ENV PYTHONOPTIMIZE=1 \
 
 COPY docker-entrypoint.sh /
 
+COPY --chown=$user_id:$group_id proxychains.conf /etc/proxychains.conf
 COPY --link --chown=$user_id:$group_id --from=build /app/ /app
 COPY uv.lock pyproject.toml /app
 COPY ./backend/alembic /app/alembic

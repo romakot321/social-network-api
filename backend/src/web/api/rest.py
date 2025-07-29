@@ -4,6 +4,8 @@ from uuid import UUID, uuid4
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from src.integration.infrastructure.fotobudka.client import FotobudkaClient
+from src.core.http.client import AsyncHttpClient
 
 from src.account.application.use_cases.add_account import AddAccountUseCase
 from src.account.application.use_cases.get_account import GetAccountUseCase
@@ -25,7 +27,8 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/", response_class=HTMLResponse)
 async def creators_list_page(request: Request, account_uow: AccountUoWDepend, task_uow: TaskUoWDepend, params: AccountListParamsDTO = Depends()):
-    creators = await GetCreatorsListUseCase(task_uow, account_uow).execute(params)
+    fotobudka_client = FotobudkaClient(AsyncHttpClient(), "")
+    creators = await GetCreatorsListUseCase(task_uow, account_uow, fotobudka_client).execute(params)
     return templates.TemplateResponse("index.html", {"request": request, "creators": creators})
 
 

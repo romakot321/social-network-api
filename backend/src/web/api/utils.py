@@ -10,7 +10,8 @@ from src.task.api.dependencies import get_task_uow, get_report_task_adapter, get
 from src.web.application.use_cases.run_creator_scrap import RunCreatorScrapUseCase
 
 
-@repeat_every(seconds=24 * 60 * 60, raise_exceptions=True)
+# @repeat_every(seconds=24 * 60 * 60, raise_exceptions=True, wait_first=12*60*60)
+@repeat_every(seconds=24 * 60 * 60, raise_exceptions=True, wait_first=10)
 async def scrape_accounts():
     account_uow = get_account_uow()
     task_uow = get_task_uow()
