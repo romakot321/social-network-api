@@ -10,6 +10,7 @@ from src.db.base import Base
 from src.core.config import settings
 from src.task.infrastructure.db.orm import TaskDB, TaskItemDB
 from src.account.infrastructure.db.orm import AccountDB, AccountProfileDB
+from src.integration.infrastructure.db.orm import InstagramAccountDB
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
