@@ -89,8 +89,8 @@ class VideoInfo(BaseModel):
     duration: int
     ratio: str
     cover: HttpUrl
-    play_addr: HttpUrl = Field(alias="playAddr")
-    download_addr: HttpUrl = Field(alias="downloadAddr")
+    play_addr: str = Field(alias="playAddr", default="")
+    download_addr: str = Field(alias="downloadAddr", default="")
 
     class Config:
         fields: ClassVar[dict] = {

@@ -31,5 +31,5 @@ class AccountProfileCreateDTO(BaseModel):
 
 class AccountListParamsDTO(BaseModel):
     page: int = 0
-    count: int = 10
+    count: int = 100
     name: str | None = None

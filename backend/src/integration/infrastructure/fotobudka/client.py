@@ -9,7 +9,7 @@ _cache = {}
 
 
 class FotobudkaClient(HttpApiClient):
-    def __str__(self, client: IHttpClient):
+    def __str__(self, client: IHttpClient, source_url="https://bot.fotobudka.online"):
         super().__init__(client, source_url="https://bot.fotobudka.online", token=settings.FOTOBUDKA_API_TOKEN)
 
     async def get_partner_stat(self, partner_code: str) -> FotobudkaPartnerStatResponse:
@@ -18,7 +18,7 @@ class FotobudkaClient(HttpApiClient):
             if (datetime.datetime.now() - created_at).seconds <= 24 * 60 * 60:
                 return schema
 
-        response = await self.request("GET", "/api/v1/partnerStat", params={"partnerCode": partner_code})
+        response = await self.request("GET", "https://bot.fotobudka.online/api/v1/partnerStat", params={"partnerCode": partner_code}, headers={"Authorization": "Bearer f113066f-2ad6-43eb-b860-8683fde1042a"})
         schema = self.validate_response(response.data, FotobudkaPartnerStatResponse)
         _cache[partner_code] = (schema, datetime.datetime.now())
         return schema

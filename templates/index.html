@@ -53,12 +53,14 @@
                         <th>Всего просмотров</th>
                         <th>Всего роликов</th>
                         <th>Всего роликов > 1 млн</th>
+                        <th>Прибыль в фотобудке</th>
                     </tr>
                     <tr>
                         <th></th>
                         <th>Youtube</th>
                         <th>TikTok</th>
                         <th>Instagram</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -74,6 +76,7 @@
                         <td>{{ creator.total_views }}</td>
                         <td>{{ creator.total_videos }}</td>
                         <td>{{ creator.big_videos }}</td>
+                        <td>{{ creator.fotobudka_income }}</td>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -84,6 +87,7 @@
                         <td>{{ creators[-1].total_views }}</td>
                         <td>{{ creators[-1].total_videos }}</td>
                         <td>{{ creators[-1].big_videos }}</td>
+                        <td>{{ creators[-1].fotobudka_income }}</td>
                     </tr>
                 </tbody>
             </table>
